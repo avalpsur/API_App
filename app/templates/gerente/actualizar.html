@@ -1,0 +1,29 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load django_bootstrap5 %}
+
+<form action="{% url 'gerente_editar' gerente.id %}" method="post"> 
+    {% csrf_token %} 
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.dni show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.nombre show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.apellidos show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.telefono show_label=True %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+</form> 
+
+{% endblock %}

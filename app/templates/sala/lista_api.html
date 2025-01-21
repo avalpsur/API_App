@@ -1,0 +1,11 @@
+{% for sala in salas %}
+<div>
+    <h2>Tamaño de la Sala: {{sala.tamano|lower}}
+    </h2>
+    <p><strong>Dirección del Cine:</strong> {{ sala.cine.direccion }}</p>
+    <p><strong>Teléfono del Cine:</strong> {{ sala.cine.telefono }}</p>
+    <p><strong>Email del Cine:</strong> {{ sala.cine.email }}</p>
+
+</div>
+<hr>
+{% endfor %}

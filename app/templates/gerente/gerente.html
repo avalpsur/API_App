@@ -1,0 +1,25 @@
+<div>
+    <h2>DNI: {{ gerente.dni}}</h2>
+    <p>Nombre: {{ gerente.nombre }}</p>
+    <p>Apellidos: {{ gerente.apellidos }}</p>
+    <p>Telefono: {{ gerente.telefono }}</p>
+</div>
+
+{% load bootstrap_icons %}
+
+<div class="mb-2">
+    <button type="button" 
+            class="btn btn-outline-primary"> 
+            <a href="{% url 'gerente_editar' gerente.id %}" ><span>{% bs_icon 'pencil' %}</span></a>
+    </button>
+</div>
+
+<div class="mb-2">
+    <form action = "{% url 'gerente_eliminar' gerente.id %}" method = "post"> 
+        {% csrf_token %}
+        <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+            <span>{% bs_icon 'trash' %}</span>
+        </button> 
+    </form>
+</div>
+<hr>

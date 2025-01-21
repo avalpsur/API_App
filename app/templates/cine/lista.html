@@ -1,0 +1,15 @@
+{% extends "principal.html" %}
+{% block header %}
+    <h1>Lista de cines</h1>
+{% endblock %}
+
+{% block busqueda %}
+{% endblock %}
+
+{% block contenido %}
+    {% for cine in cines %}
+        {% include 'cine/cine.html' %}
+        {% empty %}
+        <p>No hay cines que cumplan esa condición</p>
+    {% endfor %}
+{% endblock %}

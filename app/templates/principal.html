@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+    {% load static %}
+    {% load django_bootstrap5 %}
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gestión de Cine</title>
+        
+        <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+        
+        {% bootstrap_css %}
+
+    </head>
+    <body>
+        {% include 'estructura/menu.html' %}
+
+        <div class="container mt-4">
+            <div id="contenedor_imagen" class="text-center">
+                <img src="{% static 'imagenes/imagen.webp' %}" alt="Imagen" class="img-fluid">
+            </div>
+            <h1 class="text-center my-4">GESTIÓN DE CINE</h1>
+
+            {% block header %}
+            {% endblock %}
+
+            {% block contenido %}
+            {% endblock %}
+        </div>
+
+        {% include 'estructura/pie.html' %}
+
+        {% bootstrap_javascript %}
+        <script src="{% static 'javascript/script.js' %}"></script>
+    </body>
+</html>

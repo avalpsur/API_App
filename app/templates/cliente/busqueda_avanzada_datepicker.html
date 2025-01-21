@@ -1,0 +1,27 @@
+{% extends "principal.html" %}
+
+{% block cabecera %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+{% endblock %}
+
+{% block contenido %}
+    {{ formulario.media }}
+    {% load django_bootstrap5 %}
+    <form action="{% url 'cliente_buscar' %}" method="GET">
+        
+        {% csrf_token %}
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.textoBusqueda show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.textoBusqueda.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        {% bootstrap_button "Buscar" button_type="submit" button_class="btn-primary" %}
+      
+    </form>
+{% endblock %}

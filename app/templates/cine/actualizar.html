@@ -1,0 +1,29 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load django_bootstrap5 %}
+
+<form action="{% url 'cine_editar' cine.id %}" method="post"> 
+    {% csrf_token %} 
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.direccion show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.telefono show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.email show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.gerente show_label=True %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+</form> 
+
+{% endblock %}

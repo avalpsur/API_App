@@ -1,0 +1,16 @@
+
+{% for pelicula in peliculas_mostrar %}
+    <h2>{{ pelicula.titulo|title }}</h2>
+    <p>Director: {{ pelicula.director|capfirst }}</p>
+    <p>Sinopsis: {{ pelicula.sinopsis|default:"Sin sinopsis disponible." }}</p>
+    <p>Tiempo Proyectado: {{ pelicula.tiempoProyectada|default_if_none:"No hay un tiempo de proyección especificado para esta película" }}</p>
+    {% for sala in pelicula.sala %}
+    <h2>Tamaño de la Sala: {{sala.tamano|lower}}
+    </h2>
+    <p><strong>Dirección del Cine:</strong> {{ sala.cine.direccion }}</p>
+    <p><strong>Teléfono del Cine:</strong> {{ sala.cine.telefono }}</p>
+    <p><strong>Email del Cine:</strong> {{ sala.cine.email }}</p>
+    {% endfor %}
+    <hr>  
+
+{% endfor %}

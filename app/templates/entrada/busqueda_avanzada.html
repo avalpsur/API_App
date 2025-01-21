@@ -1,0 +1,12 @@
+{% extends "principal.html" %}
+{% block header %}
+    <h1>Buscar Entradas</h1>
+{% endblock %}
+{% block contenido %}
+<form action="{% url 'buscar_entrada' %}" method="GET">
+    {% load django_bootstrap5 %}
+    {% csrf_token %}
+    {% bootstrap_form formulario %}
+    {% bootstrap_button "Buscar" button_type="submit" button_class="btn-primary" %}
+</form>
+{% endblock %}

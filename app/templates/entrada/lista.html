@@ -1,0 +1,17 @@
+{% extends "principal.html" %}
+{% block header %}
+    <h1>Lista de Entradas</h1>
+{% endblock %}
+{% block contenido %}
+    {% for entrada in entradas %}
+        <div>
+            <p><strong>Cliente:</strong> {{ entrada.cliente.nombre }}</p>
+            <p><strong>Película:</strong> {{ entrada.pelicula.titulo }}</p>
+            <p><strong>Fecha:</strong> {{ entrada.fecha }}</p>
+            <p><strong>Hora:</strong> {{ entrada.hora }}</p>
+        </div>
+        <hr>
+    {% empty %}
+        <p>No hay entradas disponibles.</p>
+    {% endfor %}
+{% endblock %}

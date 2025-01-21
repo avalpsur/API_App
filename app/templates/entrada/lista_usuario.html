@@ -1,0 +1,19 @@
+{% extends "principal.html" %}
+{% block header %}
+    <h1>Lista de Entradas del Usuario</h1>
+{% endblock %}
+{% block contenido %}
+    {% for entrada in entradas %}
+        <div>
+            <tr>
+                <td>{{ entrada.proyeccion.pelicula.titulo }}</td>
+                <td>{{ entrada.proyeccion.sala.nombre }}</td>
+                <td>{{ entrada.proyeccion.fecha }}</td>
+                <td>{{ entrada.proyeccion.hora }}</td>
+            </tr>
+        </div>
+        <hr>
+    {% empty %}
+        <p>No hay entradas disponibles.</p>
+    {% endfor %}
+{% endblock %}

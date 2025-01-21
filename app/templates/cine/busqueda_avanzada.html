@@ -1,0 +1,38 @@
+{% extends "principal.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block cabecera_extra %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}" ></script>
+{% endblock %}
+
+{% block contenido %}
+    <h2>Buscar Cines</h2>
+    
+    <form action="{% url 'cine_buscar' %}" method="GET">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.textoBusqueda show_label=True %}
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.direccion show_label=True %}
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.telefono show_label=True %}
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.email show_label=True %}
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.gerente show_label=True %}
+        </div>
+
+        {% bootstrap_button "Buscar" button_type="submit" button_class="btn-primary" %}
+    </form>
+{% endblock %}

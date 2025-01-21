@@ -1,0 +1,135 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg py-3">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="{% url 'index' %}">
+            <img src="{% static 'imagenes/logo.webp' %}" alt="Logo" width="40" height="40" class="d-inline-block align-middle me-2">
+            Cines Polígono Sur
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'index' %}">Inicio</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="sociosDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Socios
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="sociosDropdown">
+                        <li><a class="dropdown-item" href="{% url 'lista_socios' %}">Listar Socios</a></li>
+                        {% if request.user.is_authenticated %}
+                        {% if perms.GestionCine.add_socio %}
+                        <li><a class="dropdown-item" href="{% url 'socio_create' %}">Crear Socio</a></li>
+                        {% endif %}
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{% url 'socio_buscar' %}">Buscar Socio</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="empleadosDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Empleados
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="empleadosDropdown">
+                        <li><a class="dropdown-item" href="{% url 'lista_empleados' %}">Listar Empleados</a></li>
+                        {% if perms.GestionCine.add_empleado %}
+                        <li><a class="dropdown-item" href="{% url 'empleado_create' %}">Crear Empleado</a></li>
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'empleado_buscar' %}">Buscar Empleado</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="cinesDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Cines
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="cinesDropdown">
+                        <li><a class="dropdown-item" href="{% url 'lista_cines' %}">Listar Cines</a></li>
+                        {% if perms.GestionCine.add_cine %}
+                        <li><a class="dropdown-item" href="{% url 'cine_create' %}">Crear Cine</a></li>
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'cine_buscar' %}">Buscar Cine</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="peliculasDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Películas
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="peliculasDropdown">
+                        <li><a class="dropdown-item" href="{% url 'lista_peliculas' 0 %}">Listar Películas</a></li>
+                        {% if perms.GestionCine.add_pelicula %}
+                        <li><a class="dropdown-item" href="{% url 'pelicula_create' %}">Crear Película</a></li>
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'pelicula_buscar' %}">Buscar Película</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="entradasDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Entradas
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="entradasDropdown">
+                        <li><a class="dropdown-item" href="{% url 'entrada_lista_usuario' request.user.id %}">Listar Entradas</a></li>
+                        {% if perms.GestionCine.add_entrada %}
+                        <li><a class="dropdown-item" href="{% url 'entrada_crear' %}">Crear Entrada</a></li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{% url 'buscar_entrada' %}">Buscar Entrada</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="variablesDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Variables
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="variablesDropdown">
+                        <li><a class="dropdown-item">Fecha Inicio: {{ request.session.fecha_inicio }}</a></li>
+                        <li><a class="dropdown-item">Variable 1: {{ request.session.variable1 }}</a></li>
+                        <li><a class="dropdown-item">Variable 2: {{ request.session.variable2 }}</a></li>
+                        <li><a class="dropdown-item">Variable 3: {{ request.session.variable3 }}</a></li>
+                        <li><a class="dropdown-item">Variable 4: {{ request.session.variable4 }}</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+
+            <div class="ml-2">
+                {% if not request.user.is_authenticated %}
+                <a class="btn btn-outline-warning" href="{% url 'login' %}">
+                    Login
+                </a>
+                <a class="btn btn-outline-warning" href="{% url 'registrar_usuario' %}">
+                    Registrarse
+                </a>
+                {% else %}
+                <form action="{% url 'logout' %}" class="d-flex m-3" role="search" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-light btn-outline-dark" type="submit"> Desconectarse</button>
+                </form>
+
+                <a class="btn btn-outline-warning" href="{% url 'password_reset' %}">
+                    Restablecer Contraseña
+                </a>
+                {% endif %}
+            </div>
+
+            <form class="d-flex" action="{% url 'pelicula_buscar' %}" method="GET">
+                <input class="form-control me-2 rounded-pill" type="search" placeholder="Buscar..." name="textoBusqueda"
+                    aria-label="Search">
+                <button class="btn btn-outline-light rounded-pill" type="submit">Buscar</button>
+            </form>
+        </div>
+    </div>
+</nav>

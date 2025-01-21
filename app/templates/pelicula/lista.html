@@ -1,0 +1,13 @@
+{% extends "principal.html" %}
+
+{% block header %}
+    <h1>Lista de Películas</h1>
+{% endblock %}
+
+{% block contenido %}
+    {% for pelicula in peliculas_mostrar %}
+        {% include 'pelicula/pelicula.html' %}
+    {% empty %}
+        <p>No hay películas disponibles.</p>
+    {% endfor %}
+{% endblock %}

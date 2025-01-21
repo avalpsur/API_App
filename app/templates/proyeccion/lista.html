@@ -1,0 +1,11 @@
+{% block header %}
+    <h1>Lista de Proyecciones</h1>
+{% endblock %}
+
+{% block contenido %}
+    {% for proyeccion in proyecciones %}
+        {% include 'proyeccion/proyeccion.html' %}
+    {% empty %}
+        <p>No hay proyecciones programadas para esta película.</p>
+    {% endfor %}
+{% endblock %}

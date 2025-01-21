@@ -1,0 +1,10 @@
+{% for cliente in clientes_mostrar%}
+
+    <p><strong>DNI:</strong> {{ cliente.dni }}</p>
+    <p><strong>Nombre:</strong> {{ cliente.nombre|capfirst }}</p>
+    <p><strong>Apellidos:</strong> {{ cliente.apellidos|capfirst }}</p>
+    <p><strong>Email:</strong> {{ cliente.email }}</p>
+    <hr>
+{%empty%}
+    <h1>No hay clientes</h1>
+{%endfor%}

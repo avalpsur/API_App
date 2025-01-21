@@ -1,0 +1,13 @@
+{% extends "principal.html" %}
+
+{% block header %}
+    <h1>Crear Nueva Película</h1>
+{% endblock %}
+
+{% block contenido %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }} 
+        <button type="submit" class="btn btn-primary">Crear Película</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "principal.html" %}
+
+{% block header %}
+    <h1>Lista de Empleados</h1>
+{% endblock %}
+
+{% block contenido %}
+    {% for empleado in empleados %}
+        {% include 'empleado/empleado.html' %}
+    {% empty %}
+        <p>No hay empleados disponibles</p>
+    {% endfor %}
+{% endblock %}
+

@@ -1,0 +1,20 @@
+<div>
+    <h2>Tamaño de la Sala: {{sala.tamano|lower}}
+    </h2>
+    <p><strong>Dirección del Cine:</strong> {{ sala.cine.direccion }}</p>
+    <p><strong>Teléfono del Cine:</strong> {{ sala.cine.telefono }}</p>
+    <p><strong>Email del Cine:</strong> {{ sala.cine.email }}</p>
+
+
+    <h3>Empleados en esta sala:</h3>
+    <ul>
+        {% for empleado in sala.empleado.all %}
+            <li>
+                {% include 'empleado/empleado.html' %}
+            </li>
+        {% empty %}
+            <li>No hay empleados asignados a esta sala.</li>
+        {% endfor %}
+    </ul>
+</div>
+<hr>

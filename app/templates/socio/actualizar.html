@@ -1,0 +1,29 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+
+{% load django_bootstrap5 %}
+
+<form action="{% url 'socio_editar' socio.id %}" method="post"> 
+    {% csrf_token %} 
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.numSocio show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.fechaAlta show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.fechaCaducidad show_label=True %}
+    </div>
+
+    <div class="mb-4">
+        {% bootstrap_field formulario.cliente show_label=True %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+</form> 
+
+{% endblock %}

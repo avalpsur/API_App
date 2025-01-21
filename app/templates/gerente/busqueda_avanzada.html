@@ -1,0 +1,60 @@
+{% extends "principal.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block cabecera %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}" ></script>
+{% endblock %}
+
+{% block contenido %}
+    <h1>Buscar Gerentes</h1>
+
+    <form method="GET" action="{% url 'gerente_buscar' %}">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.textoBusqueda show_label=True %}
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.dni show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.dni.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.nombre show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.nombre.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.apellidos show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.apellidos.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.telefono show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.telefono.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_button "Buscar" button_type="submit" button_class="btn-primary" %}
+        </div>
+    </form>
+{% endblock %}

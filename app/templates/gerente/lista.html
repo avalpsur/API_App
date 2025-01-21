@@ -1,0 +1,14 @@
+{% extends "principal.html" %}
+
+{% block header %}
+    <h1>Lista de Gerentes</h1>
+{% endblock %}
+
+{% block contenido %}
+    {% for gerente in gerentes %}
+        {% include 'gerente/gerente.html' %}
+    {% empty %}
+        <p>No hay gerentes disponibles</p>
+    {% endfor %}
+{% endblock %}
+

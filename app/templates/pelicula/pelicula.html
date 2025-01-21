@@ -1,0 +1,24 @@
+<h2>{{ pelicula.titulo|title }}</h2>
+<p>Director: {{ pelicula.director|capfirst }}</p>
+<p>Sinopsis: {{ pelicula.sinopsis|default:"Sin sinopsis disponible." }}</p>
+<p>Estrenada hace: {{ pelicula.fechaLanzamiento|timesince}}</p>
+<p>Tiempo Proyectado: {{ pelicula.tiempoProyectada|default_if_none:"No hay un tiempo de proyección especificado para esta película" }}</p>
+<hr>
+
+<div class="row btn-group">
+    <div class="mb-2">
+        <button type="button" class="btn btn-outline-primary">
+            <a href="{% url 'pelicula_editar' pelicula.id %}">
+                <span>{% bs_icon 'pencil' %}</span>
+            </a>
+        </button>
+    </div>
+    <div class="mb-2">
+        <form action="{% url 'pelicula_eliminar' pelicula.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                <span>{% bs_icon 'trash' %}</span>
+            </button>
+        </form>
+    </div>
+</div>

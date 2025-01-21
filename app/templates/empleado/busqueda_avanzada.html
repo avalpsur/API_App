@@ -1,0 +1,92 @@
+{% extends "principal.html" %}
+
+{% block cabecera %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}" ></script>
+{% endblock %}
+
+{% block contenido %}
+{% load django_bootstrap5 %}
+
+    <h1>Buscar Empleados</h1>
+
+    <form method="GET" action="{% url 'empleado_buscar' %}">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.textoBusqueda show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.textoBusqueda.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.dni show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.dni.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.nombre show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.nombre.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.apellidos show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.apellidos.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.nuss show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.nuss.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.iban show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.iban.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.salario show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.salario.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.cine show_label=True %}
+            <div class="invalid-feedback">
+                {% for error in formulario.cine.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_button "Buscar" button_type="submit" button_class="btn-primary" %}
+        </div>
+    </form>
+{% endblock %}

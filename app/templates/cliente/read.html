@@ -1,0 +1,11 @@
+{% extends "principal.html" %}
+{% block header %}
+    <h1>Buscar Cliente</h1>
+{% endblock %}
+
+{% block contenido %}
+<form action="{% url 'cliente_buscar' %}" class="d-flex mt-3" role="search" method="GET">
+    <input name="textoBusqueda" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-light btn-outline-dark">Buscar</button>
+</form>
+{% endblock %}
