@@ -11,6 +11,19 @@ from pathlib import Path
 
 # Create your views here.
 
+import environ
+import os
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'),True)
+env = environ.Env()
+EMPLEADO_KEY = env('EMPLEADO_KEY')
+CLIENTE_KEY = env('CLIENTE_KEY')
+GERENTE_KEY = env('GERENTE_KEY')
+
+
+
 def index(request):
     if not "fecha_inicio" in request.session:
         #request.session["fecha_inicio"] = timezone.now().strftime('%d/%m/%Y %H:%M')
@@ -22,25 +35,25 @@ def index(request):
 
 
 def clientes_lista_api(request):
-    headers = {'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MDU0ODk0LCJpYXQiOjE3MzgwNTQ1OTQsImp0aSI6ImYxMmVjNzg0NTRmYTQ2YjViOWI3NGI3OTc1MmE3MGE4IiwidXNlcl9pZCI6Nn0.iDwH0PuHpV-PUBExBTLBwkVje2LBZ9tHHWA7ZBI_zM0'}
+    headers = {'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjI3OTk3LCJpYXQiOjE3MzgyMjc2OTcsImp0aSI6IjhjMzRiYjllNjhkNDQ4ODhhYjQxZWZhNDdlYTYyNzM5IiwidXNlcl9pZCI6Mn0.-UltPGDRJtcLemI1QiVc12c0GFm6KbEVgJb-E4Vvvgs'}
     response = requests.get('http://127.0.0.1:8000/api/v1/clientes',headers=headers)
     clientes = response.json()
     return render(request, 'cliente/lista_api.html',{"clientes_mostrar":clientes})
 
 def salas_lista_api(request):
-    headers = {'Authorization' : 'Bearer HIFDy4V8xxRhzBQ5zEB2e2ZRxrh5Ye'}
+    headers = {'Authorization' : f'Bearer {CLIENTE_KEY}'}
     response = requests.get('http://127.0.0.1:8000/api/v1/salas',headers=headers)
     salas = response.json()
     return render(request, 'sala/lista_api.html',{"salas_mostrar":salas})
 
 def peliculas_lista_api(request):
-    headers = {'Authorization' : 'Bearer HIFDy4V8xxRhzBQ5zEB2e2ZRxrh5Ye'}
+    headers = {'Authorization' : f'Bearer {EMPLEADO_KEY}'}
     response = requests.get('http://127.0.0.1:8000/api/v1/peliculas',headers=headers)
     peliculas = response.json()
     return render(request, 'pelicula/lista_api.html',{"peliculas_mostrar":peliculas})
 
 def cines_lista_api(request):
-    headers = {'Authorization' : 'Bearer HIFDy4V8xxRhzBQ5zEB2e2ZRxrh5Ye'}
+    headers = {'Authorization' : f'Bearer {GERENTE_KEY}'}
     response = requests.get('http://127.0.0.1:8000/api/v1/cines',headers=headers)
     cines = response.json()
     return render(request, 'cine/lista_api.html',{"cine_mostrar":cines})
