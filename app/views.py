@@ -35,25 +35,25 @@ def index(request):
 
 
 def clientes_lista_api(request):
-    headers = {'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjI3OTk3LCJpYXQiOjE3MzgyMjc2OTcsImp0aSI6IjhjMzRiYjllNjhkNDQ4ODhhYjQxZWZhNDdlYTYyNzM5IiwidXNlcl9pZCI6Mn0.-UltPGDRJtcLemI1QiVc12c0GFm6KbEVgJb-E4Vvvgs'}
-    response = requests.get('http://127.0.0.1:8000/api/v1/clientes',headers=headers)
+    headers = {'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjM1NDU0LCJpYXQiOjE3MzgyMzUxNTQsImp0aSI6IjA1NzhkYmViM2FhNjQ1YzlhNjY4ODI2MmU5YzJhNjM5IiwidXNlcl9pZCI6Mn0.XQ3Fv0-JxqR2k8T217m2ay4Qwr3EHy-wwhpTlb24L58'}
+    response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/clientes',headers=headers)
     clientes = response.json()
     return render(request, 'cliente/lista_api.html',{"clientes_mostrar":clientes})
 
 def salas_lista_api(request):
     headers = {'Authorization' : f'Bearer {CLIENTE_KEY}'}
-    response = requests.get('http://127.0.0.1:8000/api/v1/salas',headers=headers)
+    response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/salas',headers=headers)
     salas = response.json()
     return render(request, 'sala/lista_api.html',{"salas_mostrar":salas})
 
 def peliculas_lista_api(request):
     headers = {'Authorization' : f'Bearer {EMPLEADO_KEY}'}
-    response = requests.get('http://127.0.0.1:8000/api/v1/peliculas',headers=headers)
+    response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/peliculas',headers=headers)
     peliculas = response.json()
     return render(request, 'pelicula/lista_api.html',{"peliculas_mostrar":peliculas})
 
 def cines_lista_api(request):
     headers = {'Authorization' : f'Bearer {GERENTE_KEY}'}
-    response = requests.get('http://127.0.0.1:8000/api/v1/cines',headers=headers)
+    response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/cines',headers=headers)
     cines = response.json()
     return render(request, 'cine/lista_api.html',{"cine_mostrar":cines})
