@@ -35,7 +35,7 @@ def index(request):
 
 
 def clientes_lista_api(request):
-    headers = {'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjM1NDU0LCJpYXQiOjE3MzgyMzUxNTQsImp0aSI6IjA1NzhkYmViM2FhNjQ1YzlhNjY4ODI2MmU5YzJhNjM5IiwidXNlcl9pZCI6Mn0.XQ3Fv0-JxqR2k8T217m2ay4Qwr3EHy-wwhpTlb24L58'}
+    headers = {'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjM3MDgwLCJpYXQiOjE3MzgyMzY3ODAsImp0aSI6IjM4ODdiYWU4OTJhNDRkMDBhNGVjYzg1ZDg0ODU5ZWY0IiwidXNlcl9pZCI6Mn0.YCzu5pDDUx4AZG2w83nTcYGi_vn5gr9OM28VF4quaWo'}
     response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/clientes',headers=headers)
     clientes = response.json()
     return render(request, 'cliente/lista_api.html',{"clientes_mostrar":clientes})
