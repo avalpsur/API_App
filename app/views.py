@@ -57,3 +57,23 @@ def cines_lista_api(request):
     response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/cines',headers=headers)
     cines = response.json()
     return render(request, 'cine/lista_api.html',{"cine_mostrar":cines})
+
+
+def cliente_busqueda(request):
+    formulario = BusquedaClienteForm(request.GET)
+    
+    if formulario.is_valid():
+        headers = crear_cabecera()
+        response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/clientes/busqueda',
+                                headers=headers,
+                                params=formulario.cleaned_data
+                                )
+        clientes = response.json()
+        return render(request, 'cliente/lista_api.html',{"clientes_mostrar":clientes})
+    if("HTTP_REFERER" in request.META):
+        return redirect(request.META["HTTP_REFERER"])
+    else:
+        return redirect('index')
+    
+def crear_cabecera():
+    return {'Authorization' : 'Bearer '+env(CLIENTE_KEY)}

@@ -7,4 +7,6 @@ urlpatterns = [
     path('salas/listar',views.salas_lista_api,name='sala_lista'),
     path('peliculas/listar',views.peliculas_lista_api,name='pelicula_lista'),
     path('cines/listar',views.cines_lista_api,name='cine_lista'),
+
+    path('clientes/buscar',views.clientes_buscar,name='cliente_buscar')
 ]
