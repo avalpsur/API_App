@@ -8,5 +8,9 @@ urlpatterns = [
     path('peliculas/listar',views.peliculas_lista_api,name='pelicula_lista'),
     path('cines/listar',views.cines_lista_api,name='cine_lista'),
 
-    path('clientes/buscar',views.clientes_buscar,name='cliente_buscar')
+    path('clientes/buscar',views.cliente_busqueda,name='cliente_buscar'),
+
+    path('cines/buscar',views.cine_busqueda,name='cine_buscar'),
+    #path('salas/buscar',views.sala_busqueda,name='sala_buscar'),
+    #path('peliculas/buscar',views.pelicula_busqueda,name='pelicula_buscar'),
 ]

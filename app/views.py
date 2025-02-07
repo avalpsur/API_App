@@ -35,7 +35,7 @@ def index(request):
 
 
 def clientes_lista_api(request):
-    headers = {'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjM3MDgwLCJpYXQiOjE3MzgyMzY3ODAsImp0aSI6IjM4ODdiYWU4OTJhNDRkMDBhNGVjYzg1ZDg0ODU5ZWY0IiwidXNlcl9pZCI6Mn0.YCzu5pDDUx4AZG2w83nTcYGi_vn5gr9OM28VF4quaWo'}
+    headers = {'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4OTMyMjM3LCJpYXQiOjE3Mzg5MzE5MzcsImp0aSI6Ijc1NjVlNDcwNDQyNzQxMTc4NGUxNjA1NmM4MzRmYTFjIiwidXNlcl9pZCI6Mn0.XcV1dGgs15spKRnvc3qDjzcYQRr2irJNL3LP55Fg7vQ'}
     response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/clientes',headers=headers)
     clientes = response.json()
     return render(request, 'cliente/lista_api.html',{"clientes_mostrar":clientes})
@@ -64,7 +64,7 @@ def cliente_busqueda(request):
     
     if formulario.is_valid():
         headers = crear_cabecera()
-        response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/clientes/busqueda',
+        response = requests.get('http://127.0.0.1:8000/api/v1/clientes/buscar',
                                 headers=headers,
                                 params=formulario.cleaned_data
                                 )
@@ -74,6 +74,38 @@ def cliente_busqueda(request):
         return redirect(request.META["HTTP_REFERER"])
     else:
         return redirect('index')
+
+
+def cine_busqueda(request):
+    if(len(request.GET) > 0):
+        formulario = BusquedaCineForm(request.GET)
     
+        try:
+            headers = crear_cabecera()
+            response = requests.get(
+                                    'http://127.0.0.1:8000/api/v1/clientes/buscar',
+                                    headers=headers,
+                                    params=formulario.cleaned_data
+                                    )
+            if(response.status_code == requests.codes.ok):
+                cines = response.json()
+                return render(request, 'cine/lista_api.html',{"cine_mostrar":cines})
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+            return render(request, 'cine/busqueda.html',{"formulario":formulario})
+        except Exception as err:
+            print(f'Hubo un error: {err}')
+            return mi_error_500(request)
+   
+        
 def crear_cabecera():
-    return {'Authorization' : 'Bearer '+env(CLIENTE_KEY)}
+    return {'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4OTMyMjM3LCJpYXQiOjE3Mzg5MzE5MzcsImp0aSI6Ijc1NjVlNDcwNDQyNzQxMTc4NGUxNjA1NmM4MzRmYTFjIiwidXNlcl9pZCI6Mn0.XcV1dGgs15spKRnvc3qDjzcYQRr2irJNL3LP55Fg7vQ'}
+
+

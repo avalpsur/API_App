@@ -125,7 +125,7 @@
                 {% endif %}
             </div>
 
-            <form class="d-flex" action="" method="GET">
+            <form class="d-flex" action="{% url 'cliente_buscar' %}" method="GET">
                 <input class="form-control me-2 rounded-pill" type="search" placeholder="Buscar..." name="textoBusqueda"
                     aria-label="Search">
                 <button class="btn btn-outline-light rounded-pill" type="submit">Buscar</button>
