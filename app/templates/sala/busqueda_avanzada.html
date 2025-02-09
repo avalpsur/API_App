@@ -8,21 +8,17 @@
 {% endblock %}
 
 {% block contenido %}
-    <h2>Buscar Cines</h2>
+    <h2>Buscar Salas</h2>
     
-    <form action="{% url 'cine_buscar' %}" method="GET">
+    <form action="{% url 'sala_buscar' %}" method="GET">
         {% csrf_token %}
 
         <div class="mb-4">
-            {% bootstrap_field formulario.direccion show_label=True %}
+            {% bootstrap_field formulario.tamano show_label=True %}
         </div>
 
         <div class="mb-4">
-            {% bootstrap_field formulario.telefono show_label=True %}
-        </div>
-
-        <div class="mb-4">
-            {% bootstrap_field formulario.email show_label=True %}
+            {% bootstrap_field formulario.cine show_label=True %}
         </div>
 
         {% bootstrap_button "Buscar" button_type="submit" button_class="btn-primary" %}

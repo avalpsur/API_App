@@ -1,0 +1,36 @@
+{% extends "principal.html" %}
+
+{% block cabecera %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}" ></script>
+{% endblock %}
+
+{% block contenido %}
+{% load django_bootstrap5 %}
+    <form action = "{% url 'sala_buscar' %}" method = "GET"> 
+        
+        {% csrf_token %}
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.tamano show_label=True %}
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.cine show_label=True %}
+        </div>
+
+        {% bootstrap_button "Enviar" button_type="submit" button_class="btn-primary" %}
+      
+    </form> 
+
+    <div class="mt-4">
+        {% if salas_mostrar %}
+            <h3>Resultados de la búsqueda</h3>
+            <ul>
+                {% for sala in salas_mostrar %}
+                    <li>{{ sala.nombre }} - Tamaño: {{ sala.tamano }} - Cine: {{ sala.cine }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}

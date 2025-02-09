@@ -21,3 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include("app.urls")),
 ]
+
+from django.conf.urls import handler404,handler500
+handler404 = "app.views.mi_error_404"
+handler500 = "app.views.mi_error_500"

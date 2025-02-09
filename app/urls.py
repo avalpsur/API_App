@@ -11,6 +11,6 @@ urlpatterns = [
     path('clientes/buscar',views.cliente_busqueda,name='cliente_buscar'),
 
     path('cines/buscar',views.cine_busqueda,name='cine_buscar'),
-    #path('salas/buscar',views.sala_busqueda,name='sala_buscar'),
-    #path('peliculas/buscar',views.pelicula_busqueda,name='pelicula_buscar'),
+    path('salas/buscar',views.sala_busqueda,name='sala_buscar'),
+    path('peliculas/buscar',views.pelicula_busqueda,name='pelicula_buscar'),
 ]

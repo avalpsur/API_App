@@ -32,15 +32,6 @@
         </div>
 
         <div class="mb-4">
-            {% bootstrap_field formulario.nombre show_label=True %}
-            <div class="invalid-feedback">
-                {% for error in formulario.nombre.errors %}
-                    {{ error }}
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="mb-4">
             {% bootstrap_field formulario.apellidos show_label=True %}
             <div class="invalid-feedback">
                 {% for error in formulario.apellidos.errors %}
