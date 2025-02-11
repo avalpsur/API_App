@@ -28,3 +28,27 @@ class BusquedaPeliculaForm(forms.Form):
     director = forms.CharField(required=False, label='Director')
     fecha_desde = forms.DateField(required=False, label='Fecha Desde')
     fecha_hasta = forms.DateField(required=False, label='Fecha Hasta')
+
+class ClientePost(forms.Form):
+    dni = forms.CharField(required=True, label='DNI',
+                          max_length=9,
+                          min_length=9)
+    nombre = forms.CharField(required=True, label='Nombre',
+                             max_length=50,
+                             min_length=2,
+                             help_text="Introduce tu nombre")
+    apellidos = forms.CharField(required=True, label='Apellidos',
+                                max_length=100,
+                                min_length=2,
+                                help_text="Introduce tus apellidos")    
+    email = forms.EmailField(required=True, label='Email',
+                             max_length=100,
+                             min_length=2,
+                             help_text="Introduce tu email")
+    
+    def __init__(self, *args, **kwargs):
+        super(ClientePost, self).__init__(*args, **kwargs) 
+        self.fields['dni'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['nombre'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['apellidos'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['email'].widget.attrs.update({'class' : 'form-control'})

@@ -187,8 +187,49 @@ def pelicula_busqueda(request):
         formulario = BusquedaPeliculaForm(None)
     return render(request, 'pelicula/busqueda_avanzada_datepicker.html', {"formulario": formulario})
 
+
+def cliente_post(request):
+    if request.method == 'POST':
+        try:
+            formulario = ClientePost(request.POST)
+            headers = crear_cabecera()
+            datos = formulario.data.copy()
+            datos["dni"] = request.POST.get("dni")
+            datos["nombre"] = request.POST.get("nombre")
+            datos["apellidos"] = request.POST.get("apellidos")
+            datos["email"] = request.POST.get("email")
+            
+            response = requests.post('http://127.0.0.1:8000/api/v1/clientes/create',
+                                     headers=headers,
+                                     data=json.dumps(datos)
+                                     )
+            if response.status_code == requests.codes.ok:
+                return redirect('cliente_lista') 
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if response.status_code == 400:
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error, errores[error])
+                return render(request, 'cliente/create.html', {"formulario": formulario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    else:
+        formulario = ClientePost(None)
+        return render(request, 'cliente/create.html', {"formulario": formulario})
+    
+    
+    return render(request, 'cliente/create.html', {"formulario": formulario})
 def crear_cabecera():
-    return {'Authorization' : 'Bearer gccHxGtC1JVz0zWi8fbDm2cY7iN8WP'}
+    return {'Authorization' : 'Bearer jdWX9HekDJtXrwsbEzGOk2VzpVv1Co',
+            "Content-Type": "application/json"
+            }
 
 
 #Páginas de Error
