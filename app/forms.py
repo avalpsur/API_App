@@ -52,3 +52,39 @@ class ClientePost(forms.Form):
         self.fields['nombre'].widget.attrs.update({'class' : 'form-control'})
         self.fields['apellidos'].widget.attrs.update({'class' : 'form-control'})
         self.fields['email'].widget.attrs.update({'class' : 'form-control'})
+    
+class ClienteEditarForm(forms.Form):
+    dni = forms.CharField(
+        required=True,
+        label='DNI',
+        max_length=9,
+        min_length=9,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'})
+    )
+    nombre = forms.CharField(
+        required=True,
+        label='Nombre',
+        max_length=50,
+        min_length=2,
+        help_text="Introduce tu nombre",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    apellidos = forms.CharField(
+        required=True,
+        label='Apellidos',
+        max_length=100,
+        min_length=2,
+        help_text="Introduce tus apellidos",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    email = forms.EmailField(
+        required=True,
+        label='Email',
+        max_length=100,
+        min_length=2,
+        help_text="Introduce tu email",
+        widget=forms.EmailInput(attrs={'class': 'form-control'})
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(ClienteEditarForm, self).__init__(*args, **kwargs)

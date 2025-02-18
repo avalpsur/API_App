@@ -39,38 +39,35 @@ def obtener_url():
 
 def procesar_respuesta(response):
     content_type = response.headers.get('Content-Type', '')
-#Hacemos una comprobación para saber si la respuesta es un JSON o un XML
     if 'application/json' in content_type:
-        return procesar_respuesta(response)
+        return response.json()
     elif 'application/xml' in content_type or 'text/xml' in content_type:
-         # Convierte el XML en un árbol de elementos (Fuente: https://docs.python.org/es/3.9/library/xml.etree.elementtree.html)
         import xml.etree.ElementTree as ET
-        return ET.fromstring(response.text) 
+        return ET.fromstring(response.text)
     else:
-        return response.text  
-
+        return response.text
 
 def clientes_lista_api(request):
-    headers = {'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4OTMyMjM3LCJpYXQiOjE3Mzg5MzE5MzcsImp0aSI6Ijc1NjVlNDcwNDQyNzQxMTc4NGUxNjA1NmM4MzRmYTFjIiwidXNlcl9pZCI6Mn0.XcV1dGgs15spKRnvc3qDjzcYQRr2irJNL3LP55Fg7vQ'}
-    response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/clientes',headers=headers)
+    headers = crear_cabecera()
+    response = requests.get('http://127.0.0.1:8000/api/v1/clientes',headers=headers)
     clientes = procesar_respuesta(response)
     return render(request, 'cliente/lista_api.html',{"clientes_mostrar":clientes})
 
 def salas_lista_api(request):
     headers = {'Authorization' : f'Bearer {CLIENTE_KEY}'}
-    response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/salas',headers=headers)
+    response = requests.get('http://127.0.0.1:8000/api/v1/salas',headers=headers)
     salas = procesar_respuesta(response)
     return render(request, 'sala/lista_api.html',{"salas_mostrar":salas})
 
 def peliculas_lista_api(request):
     headers = {'Authorization' : f'Bearer {EMPLEADO_KEY}'}
-    response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/peliculas',headers=headers)
+    response = requests.get('http://127.0.0.1:8000/api/v1/peliculas',headers=headers)
     peliculas = procesar_respuesta(response)
     return render(request, 'pelicula/lista_api.html',{"peliculas_mostrar":peliculas})
 
 def cines_lista_api(request):
     headers = {'Authorization' : f'Bearer {GERENTE_KEY}'}
-    response = requests.get('https://avalpsur.pythonanywhere.com/api/v1/cines',headers=headers)
+    response = requests.get('http://127.0.0.1:8000/api/v1/cines',headers=headers)
     cines = procesar_respuesta(response)
     return render(request, 'cine/lista_api.html',{"cine_mostrar":cines})
 
@@ -226,8 +223,48 @@ def cliente_post(request):
     
     
     return render(request, 'cliente/create.html', {"formulario": formulario})
+
+def cliente_editar(request, cliente_id):
+    datosFormulario = None
+
+    if request.method == "POST":
+        datosFormulario = request.POST
+
+    headers = crear_cabecera()
+    response = requests.get(f'http://127.0.0.1:8000/api/v1/clientes/{cliente_id}', headers=headers)
+
+    if response.status_code != requests.codes.ok:
+        return mi_error_500(request)
+
+    cliente = response.json()
+
+    formulario = ClienteEditarForm(datosFormulario, initial={
+        'dni': cliente['dni'],
+        'nombre': cliente['nombre'],
+        'apellidos': cliente['apellidos'],
+        'email': cliente['email']
+    })
+
+    if request.method == "POST":
+        formulario = ClienteEditarForm(request.POST)
+        if formulario.is_valid():
+            datos = request.POST.copy()
+            response = requests.put(
+                f'http://127.0.0.1:8000/api/v1/clientes/{cliente_id}/editar',
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if response.status_code == requests.codes.ok:
+                return redirect("cliente_lista")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+
+    return render(request, 'cliente/editar.html', {"formulario": formulario, "cliente": cliente})
+
+
 def crear_cabecera():
-    return {'Authorization' : 'Bearer jdWX9HekDJtXrwsbEzGOk2VzpVv1Co',
+    return {'Authorization' : 'Bearer sz2qhDYaIWe6op1wtCPIJNeySwJU44',
             "Content-Type": "application/json"
             }
 

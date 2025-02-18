@@ -1,0 +1,28 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+<div class="container">
+    <h2 class="my-4">Editar Cliente</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="dni">DNI:</label>
+            {{ formulario.dni }}
+        </div>
+        <div class="mb-3">
+            <label for="nombre">Nombre:</label>
+            {{ formulario.nombre }}
+        </div>
+        <div class="mb-3">
+            <label for="apellidos">Apellidos:</label>
+            {{ formulario.apellidos }}
+        </div>
+        <div class="mb-3">
+            <label for="email">Email:</label>
+            {{ formulario.email }}
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <a href="{% url 'cliente_lista' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

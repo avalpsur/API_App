@@ -14,5 +14,6 @@ urlpatterns = [
     path('salas/buscar',views.sala_busqueda,name='sala_buscar'),
     path('peliculas/buscar',views.pelicula_busqueda,name='pelicula_buscar'),
 
-    path('clientes/post',views.cliente_post,name='cliente_post')
+    path('clientes/post',views.cliente_post,name='cliente_post'),
+    path('clientes/<int:cliente_id>/editar', views.cliente_editar, name='cliente_editar'),
 ]
