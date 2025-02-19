@@ -1,11 +1,36 @@
-{% for sala in salas_mostrar %}
-<div>
-    <h2>Tamaño de la Sala: {{sala.tamano|lower}}
-    </h2>
-    <p><strong>Dirección del Cine:</strong> {{ sala.cine.direccion }}</p>
-    <p><strong>Teléfono del Cine:</strong> {{ sala.cine.telefono }}</p>
-    <p><strong>Email del Cine:</strong> {{ sala.cine.email }}</p>
+{% extends "principal.html" %}
 
-</div>
-<hr>
-{% endfor %}
+{% block contenido %}
+<h2>Lista de Salas</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Tamaño</th>
+            <th>Cine</th>
+            
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sala in salas_mostrar %}
+        <tr>
+            <td>{{ sala.tamano }}</td>
+            <td>{{ sala.cine.nombre }}</td>
+           
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'sala_crear' %}" class="btn btn-success">➕ Agregar Sala</a>
+
+{% endblock %}

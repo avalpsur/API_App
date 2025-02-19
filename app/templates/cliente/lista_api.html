@@ -1,10 +1,43 @@
-{% for cliente in clientes_mostrar%}
+{% extends "principal.html" %}
 
-    <p><strong>DNI:</strong> {{ cliente.dni }}</p>
-    <p><strong>Nombre:</strong> {{ cliente.nombre|capfirst }}</p>
-    <p><strong>Apellidos:</strong> {{ cliente.apellidos|capfirst }}</p>
-    <p><strong>Email:</strong> {{ cliente.email }}</p>
-    <hr>
-{%empty%}
-    <h1>No hay clientes</h1>
-{%endfor%}
+{% block contenido %}
+<h2>Lista de Clientes</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cliente in clientes_mostrar %}
+        <tr>
+            <td>{{ cliente.nombre }}</td>
+            <td>{{ cliente.apellidos }}</td>
+            <td>{{ cliente.email }}</td>
+            <td>
+                <a href="{% url 'cliente_editar' cliente.id %}" class="btn btn-primary">✏️ Editar</a>
+                <a href="{% url 'cliente_eliminar' cliente.id %}" class="btn btn-danger"
+                   onclick="return confirm('¿Seguro que quieres eliminar este cliente?')">
+                   Eliminar
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'cliente_post' %}" class="btn btn-success">➕ Agregar Cliente</a>
+
+{% endblock %}

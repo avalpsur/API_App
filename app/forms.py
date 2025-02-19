@@ -88,3 +88,31 @@ class ClienteEditarForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(ClienteEditarForm, self).__init__(*args, **kwargs)
+
+class ClienteActualizarNombreForm(forms.Form):
+    nombre = forms.CharField(max_length=100, required=True, label="Nuevo Nombre")
+
+
+
+class SalaForm(forms.Form):
+    TAMANO_CHOICES = [
+        ('PE', 'Pequeña'),
+        ('ME', 'Mediana'),
+        ('GR', 'Grande'),
+    ]
+    tamano = forms.ChoiceField(required=True, choices=TAMANO_CHOICES, label='Tamaño de la Sala')
+    cine = forms.ChoiceField(required=True, label='Cine', choices=[])
+    empleado = forms.MultipleChoiceField(required=True, label='Empleados', choices=[], widget=forms.CheckboxSelectMultiple)
+
+    def __init__(self, *args, **kwargs):
+        cines_disponibles = kwargs.pop("cines_disponibles", [])
+        empleados_disponibles = kwargs.pop("empleados_disponibles", [])
+        
+        super(SalaForm, self).__init__(*args, **kwargs)
+
+        self.fields["cine"].choices = [(cine["id"], cine["direccion"]) for cine in cines_disponibles]
+        self.fields["empleado"].choices = [(empleado["id"], f"{empleado['nombre']} {empleado['apellidos']}") for empleado in empleados_disponibles]
+
+        self.fields["tamano"].widget.attrs.update({'class': 'form-control'})
+        self.fields["cine"].widget.attrs.update({'class': 'form-control'})
+        self.fields["empleado"].widget.attrs.update({'class': 'form-control'})

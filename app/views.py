@@ -54,19 +54,19 @@ def clientes_lista_api(request):
     return render(request, 'cliente/lista_api.html',{"clientes_mostrar":clientes})
 
 def salas_lista_api(request):
-    headers = {'Authorization' : f'Bearer {CLIENTE_KEY}'}
+    headers = crear_cabecera()
     response = requests.get('http://127.0.0.1:8000/api/v1/salas',headers=headers)
     salas = procesar_respuesta(response)
     return render(request, 'sala/lista_api.html',{"salas_mostrar":salas})
 
 def peliculas_lista_api(request):
-    headers = {'Authorization' : f'Bearer {EMPLEADO_KEY}'}
+    headers = crear_cabecera()
     response = requests.get('http://127.0.0.1:8000/api/v1/peliculas',headers=headers)
     peliculas = procesar_respuesta(response)
     return render(request, 'pelicula/lista_api.html',{"peliculas_mostrar":peliculas})
 
 def cines_lista_api(request):
-    headers = {'Authorization' : f'Bearer {GERENTE_KEY}'}
+    headers = crear_cabecera()
     response = requests.get('http://127.0.0.1:8000/api/v1/cines',headers=headers)
     cines = procesar_respuesta(response)
     return render(request, 'cine/lista_api.html',{"cine_mostrar":cines})
@@ -188,25 +188,33 @@ def pelicula_busqueda(request):
 def cliente_post(request):
     if request.method == 'POST':
         try:
-            formulario = ClientePost(request.POST)
-            headers = crear_cabecera()
+            formulario = ClientePost(request.POST)  # Cargar los datos en el formulario
+            headers = crear_cabecera()  # Encabezados para la API
             datos = formulario.data.copy()
+
+            # Asegurar que todos los datos están en el diccionario
             datos["dni"] = request.POST.get("dni")
             datos["nombre"] = request.POST.get("nombre")
             datos["apellidos"] = request.POST.get("apellidos")
             datos["email"] = request.POST.get("email")
-            
-            response = requests.post('http://127.0.0.1:8000/api/v1/clientes/create',
-                                     headers=headers,
-                                     data=json.dumps(datos)
-                                     )
-            if response.status_code == requests.codes.ok:
-                return redirect('cliente_lista') 
+
+            # Hacer la petición POST a la API
+            response = requests.post(
+                'http://127.0.0.1:8000/api/v1/clientes/create',
+                headers=headers,
+                data=json.dumps(datos)
+            )
+
+            if response.status_code == 201:  # 201 Created
+                messages.success(request, "Cliente creado con éxito")
+                return redirect('cliente_lista')  # Redirigir a la lista de clientes
+
             else:
-                print(response.status_code)
+                print("Error en la respuesta:", response.status_code)
                 response.raise_for_status()
+
         except HTTPError as http_err:
-            print(f'Hubo un error en la petición: {http_err}')
+            print(f'Error en la petición: {http_err}')
             if response.status_code == 400:
                 errores = response.json()
                 for error in errores:
@@ -214,15 +222,16 @@ def cliente_post(request):
                 return render(request, 'cliente/create.html', {"formulario": formulario})
             else:
                 return mi_error_500(request)
+
         except Exception as err:
-            print(f'Ocurrió un error: {err}')
+            print(f'Ocurrió un error inesperado: {err}')
             return mi_error_500(request)
+
     else:
         formulario = ClientePost(None)
-        return render(request, 'cliente/create.html', {"formulario": formulario})
-    
-    
+
     return render(request, 'cliente/create.html', {"formulario": formulario})
+
 
 def cliente_editar(request, cliente_id):
     datosFormulario = None
@@ -262,9 +271,114 @@ def cliente_editar(request, cliente_id):
 
     return render(request, 'cliente/editar.html', {"formulario": formulario, "cliente": cliente})
 
+def cliente_editar_nombre(request, cliente_id):
+    datosFormulario = None
+
+    if request.method == "POST":
+        datosFormulario = request.POST
+
+    headers = crear_cabecera()
+
+    response = requests.get(f'http://127.0.0.1:8000/api/v1/clientes/{cliente_id}', headers=headers)
+
+    if response.status_code != requests.codes.ok:
+        messages.error(request, "No se pudo obtener el cliente")
+        return redirect("cliente_lista")
+
+    cliente = response.json()
+
+    formulario = ClienteActualizarNombreForm(datosFormulario, initial={
+        'nombre': cliente['nombre']
+    })
+
+    if request.method == "POST":
+        formulario = ClienteActualizarNombreForm(request.POST)
+        if formulario.is_valid():
+            datos = request.POST.copy()
+
+            response = requests.patch(
+                f'http://127.0.0.1:8000/api/v1/clientes/{cliente_id}/actualizar/nombre',
+                headers=headers,
+                data=json.dumps(datos)
+            )
+
+            if response.status_code == requests.codes.ok:
+                messages.success(request, "Nombre actualizado con éxito")
+                return redirect("cliente_lista")  # Redirigir a la lista de clientes
+            else:
+                response.raise_for_status()
+
+    return render(request, 'cliente/actualizar_nombre.html', {"formulario": formulario, "cliente": cliente})
+
+
+def cliente_eliminar(request, cliente_id):
+    try:
+        headers = crear_cabecera() 
+        response = requests.delete(
+            f'http://127.0.0.1:8000/api/v1/clientes/{cliente_id}/eliminar',
+            headers=headers,
+        )
+
+        if response.status_code == requests.codes.ok:
+            messages.success(request, "Cliente eliminado correctamente")
+            return redirect("cliente_lista")  
+        else:
+            response.raise_for_status()
+
+    except HTTPError as http_err:
+        messages.error(request, f"Error en la petición: {http_err}")
+    except Exception as err:
+        messages.error(request, f"Ocurrió un error inesperado: {err}")
+        return mi_error_500(request)
+
+    return redirect("cliente_lista") 
+
+
+
+def sala_crear(request):
+    headers =crear_cabecera()   
+
+    # Obtener cines desde la API
+    response_cines = requests.get('http://127.0.0.1:8000/api/v1/cines', headers=headers)
+    cines_disponibles = response_cines.json() if response_cines.status_code == 200 else []
+
+    # Obtener empleados desde la API
+    response_empleados = requests.get('http://127.0.0.1:8000/api/v1/empleados', headers=headers)
+    empleados_disponibles = response_empleados.json() if response_empleados.status_code == 200 else []
+
+    if request.method == "POST":
+        try:
+            formulario = SalaForm(request.POST, cines_disponibles=cines_disponibles, empleados_disponibles=empleados_disponibles)
+            if formulario.is_valid():
+                datos = formulario.cleaned_data.copy()
+                datos["cine"] = int(datos["cine"])  # Asegurar que cine se pasa como ID
+                datos["empleado"] = list(map(int, request.POST.getlist("empleado")))  # Convertir empleados a lista de IDs
+                
+                response = requests.post(
+                    'http://127.0.0.1:8000/api/v1/salas/create',
+                    headers=headers,
+                    json=datos
+                )
+
+                if response.status_code == 201:
+                    messages.success(request, "Sala creada con éxito")
+                    return redirect("sala_lista")
+                else:
+                    print(f"Error en la respuesta: {response.status_code}")
+                    response.raise_for_status()
+                    
+        except HTTPError as http_err:
+            print(f'Error en la petición: {http_err}')
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+
+    else:
+        formulario = SalaForm(cines_disponibles=cines_disponibles, empleados_disponibles=empleados_disponibles)
+
+    return render(request, 'sala/create.html', {"formulario": formulario, "cines": cines_disponibles, "empleados": empleados_disponibles})
 
 def crear_cabecera():
-    return {'Authorization' : 'Bearer sz2qhDYaIWe6op1wtCPIJNeySwJU44',
+    return {'Authorization' : 'Bearer aTDC2VfZVr0tyDS1r9HoN2BcAEPp8d',
             "Content-Type": "application/json"
             }
 

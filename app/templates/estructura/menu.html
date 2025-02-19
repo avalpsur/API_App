@@ -75,6 +75,24 @@
                         {% endif %}
                     </ul>
                 </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="clientesDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Clientes
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="clientesDropdown">
+                        <li><a class="dropdown-item" href="{% url 'cliente_lista' %}">Listar Clientes</a></li>
+                        {% if perms.GestionCine.add_cliente %}
+                        <li><a class="dropdown-item" href="{% url 'cliente_crear' %}">Crear Cliente</a></li>
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'cliente_buscar' %}">Buscar Cliente</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                
+
                 {% if request.user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="entradasDropdown" role="button"

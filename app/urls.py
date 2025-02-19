@@ -16,4 +16,9 @@ urlpatterns = [
 
     path('clientes/post',views.cliente_post,name='cliente_post'),
     path('clientes/<int:cliente_id>/editar', views.cliente_editar, name='cliente_editar'),
+    path('clientes/<int:cliente_id>/actualizar/nombre', views.cliente_editar_nombre, name='cliente_editar_nombre'),
+    path('clientes/<int:cliente_id>/eliminar', views.cliente_eliminar, name='cliente_eliminar'),
+
+    path('salas/create', views.sala_crear, name='sala_crear'),
+
 ]
