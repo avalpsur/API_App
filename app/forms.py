@@ -4,7 +4,9 @@ from datetime import date
 import datetime
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+from django import forms
+import requests
+from django.conf import settings
 
 class BusquedaClienteForm(forms.Form):
     textoBusqueda = forms.CharField(required=False)
@@ -116,3 +118,62 @@ class SalaForm(forms.Form):
         self.fields["tamano"].widget.attrs.update({'class': 'form-control'})
         self.fields["cine"].widget.attrs.update({'class': 'form-control'})
         self.fields["empleado"].widget.attrs.update({'class': 'form-control'})
+
+
+class SalaEditarForm(forms.Form):
+    TAMANO_CHOICES = [
+        ('PE', 'Pequeña'),
+        ('ME', 'Mediana'),
+        ('GR', 'Grande'),
+    ]
+    tamano = forms.ChoiceField(required=True, choices=TAMANO_CHOICES, label='Tamaño de la Sala')
+    cine = forms.ChoiceField(required=True, label='Cine', choices=[])
+    empleado = forms.MultipleChoiceField(required=True, label='Empleados', choices=[], widget=forms.CheckboxSelectMultiple)
+
+    def __init__(self, *args, **kwargs):
+        cines_disponibles = kwargs.pop("cines_disponibles", [])
+        empleados_disponibles = kwargs.pop("empleados_disponibles", [])
+        
+        super(SalaEditarForm, self).__init__(*args, **kwargs)
+
+        self.fields["cine"].choices = [(cine["id"], cine["direccion"]) for cine in cines_disponibles]
+        self.fields["empleado"].choices = [(empleado["id"], f"{empleado['nombre']} {empleado['apellidos']}") for empleado in empleados_disponibles]
+
+        self.fields["tamano"].widget.attrs.update({'class': 'form-control'})
+        self.fields["cine"].widget.attrs.update({'class': 'form-control'})
+        self.fields["empleado"].widget.attrs.update({'class': 'form-control'})
+
+class PeliculaForm(forms.Form):
+    titulo = forms.CharField(max_length=500, required=True, label="Título de la Película")
+    director = forms.CharField(max_length=300, required=True, label="Director")
+    sinopsis = forms.CharField(widget=forms.Textarea, required=False, label="Sinopsis")
+    fechaLanzamiento = forms.DateField(required=True, label="Fecha de Lanzamiento")
+    tiempoProyectada = forms.DurationField(required=False, label="Tiempo Proyectada")
+    sala = forms.MultipleChoiceField(required=True, label="Sala(s)", choices=[])
+
+    def __init__(self, *args, **kwargs):
+        super(PeliculaForm, self).__init__(*args, **kwargs)
+
+        # Obtener las salas desde la API
+        headers = {'Authorization' : 'Bearer cA9Wl2Xd8EfrylFfVfEqzAqdJS4owq',
+            "Content-Type": "application/json"
+            }
+        response = requests.get('http://127.0.0.1:8000/api/v1/salas', headers=headers)
+        
+        if response.status_code == 200:
+            salas = response.json()
+            lista_salas = []
+            for sala in salas:
+                lista_salas.append((sala["id"], f"Tamaño: {sala['tamano']} - Cine: {sala['cine']['direccion']}"))
+            self.fields["sala"].choices = lista_salas
+        else:
+            print("❌ Error al obtener las salas:", response.status_code)
+            print("❌ Detalles:", response.text)
+        
+        # Añadir clases CSS para estilo
+        self.fields['titulo'].widget.attrs.update({'class': 'form-control'})
+        self.fields['director'].widget.attrs.update({'class': 'form-control'})
+        self.fields['sinopsis'].widget.attrs.update({'class': 'form-control'})
+        self.fields['fechaLanzamiento'].widget.attrs.update({'class': 'form-control'})
+        self.fields['tiempoProyectada'].widget.attrs.update({'class': 'form-control'})
+        self.fields['sala'].widget.attrs.update({'class': 'form-control'})

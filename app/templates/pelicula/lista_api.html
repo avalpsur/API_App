@@ -1,16 +1,40 @@
+{% extends "principal.html" %}
 
-{% for pelicula in peliculas_mostrar %}
-    <h2>{{ pelicula.titulo|title }}</h2>
-    <p>Director: {{ pelicula.director|capfirst }}</p>
-    <p>Sinopsis: {{ pelicula.sinopsis|default:"Sin sinopsis disponible." }}</p>
-    <p>Tiempo Proyectado: {{ pelicula.tiempoProyectada|default_if_none:"No hay un tiempo de proyección especificado para esta película" }}</p>
-    {% for sala in pelicula.sala %}
-    <h2>Tamaño de la Sala: {{sala.tamano|lower}}
-    </h2>
-    <p><strong>Dirección del Cine:</strong> {{ sala.cine.direccion }}</p>
-    <p><strong>Teléfono del Cine:</strong> {{ sala.cine.telefono }}</p>
-    <p><strong>Email del Cine:</strong> {{ sala.cine.email }}</p>
-    {% endfor %}
-    <hr>  
+{% block contenido %}
+<h2>Lista de Películas</h2>
 
-{% endfor %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Director</th>
+            <th>Fecha de Lanzamiento</th>
+            <th>Sinopsis</th>
+            <th>Tiempo Proyectada</th>
+            <th>Salas</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pelicula in peliculas_mostrar %}
+        <tr>
+            <td>{{ pelicula.titulo }}</td>
+            <td>{{ pelicula.director }}</td>
+            <td>{{ pelicula.fechaLanzamiento }}</td>
+            <td>{{ pelicula.sinopsis }}</td>
+            <td>{{ pelicula.tiempoProyectada }}</td>
+            <td>
+                {% for sala in pelicula.sala %}
+                    {{ sala.tamano }}<br>
+                {% endfor %}
+            </td>
+            <td>
+                <a href="{% url 'pelicula_editar' pelicula.id %}" class="btn btn-primary">Editar</a>
+                <a href="{% url 'pelicula_eliminar' pelicula.id %}" class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
