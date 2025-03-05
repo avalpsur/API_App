@@ -1,0 +1,44 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+<h2>Editar Sala</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="id_tamano">Tamaño de la Sala</label>
+        {{ formulario.tamano }}
+    </div>
+    
+    <div class="form-group">
+        <label for="id_cine">Cine</label>
+        <select name="cine" class="form-control" id="id_cine" required>
+            <option value="">Seleccione un Cine</option>
+            {% for cine in cines %}
+                <option value="{{ cine.id }}" {% if sala.cine.id == cine.id %}selected{% endif %}>
+                    {{ cine.direccion }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="id_empleado">Empleado(s)</label>
+        <select name="empleado" class="form-control" id="id_empleado" multiple required>
+            {% for empleado in empleados %}
+                <option value="{{ empleado.id }}" 
+                        {% if empleado.id in sala.empleado %}selected{% endif %}>
+                    {{ empleado.nombre }} {{ empleado.apellidos }}
+                </option>
+            {% endfor %}
+        </select>
+        <small class="form-text text-muted">
+            Mantén pulsada la tecla control para seleccionar varios empleados
+        </small>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a href="{% url 'sala_lista' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

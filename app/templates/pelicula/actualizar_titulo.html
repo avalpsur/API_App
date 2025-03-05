@@ -1,0 +1,13 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+<h2>Actualizar Título de la Película</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ formulario.titulo.label_tag }} {{ formulario.titulo }}
+    <button type="submit" class="btn btn-primary">Actualizar Título</button>
+    <a href="{% url 'pelicula_lista' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+
+{% endblock %}

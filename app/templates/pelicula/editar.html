@@ -1,0 +1,45 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+<h2>Editar Película</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="id_titulo">Título de la Película</label>
+        {{ formulario.titulo }}
+    </div>
+    
+    <div class="form-group">
+        <label for="id_director">Director</label>
+        {{ formulario.director }}
+    </div>
+    
+    <div class="form-group">
+        <label for="id_sinopsis">Sinopsis</label>
+        {{ formulario.sinopsis }}
+    </div>
+    
+    <div class="form-group">
+        <label for="id_fechaLanzamiento">Fecha de Lanzamiento</label>
+        {{ formulario.fechaLanzamiento }}
+    </div>
+    
+    <div class="form-group">
+        <label for="id_tiempoProyectada">Tiempo Proyectada</label>
+        {{ formulario.tiempoProyectada }}
+    </div>
+    
+    <div class="form-group">
+        <label for="id_sala">Sala(s)</label>
+        {{ formulario.sala }}
+        <small class="form-text text-muted">
+            Mantén pulsada la tecla control para seleccionar varias salas
+        </small>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a href="{% url 'pelicula_lista' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

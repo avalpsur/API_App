@@ -1,10 +1,16 @@
-{% for cliente in clientes_mostrar%}
+{% extends "principal.html" %}
+{% block header %}
+    <h1>Lista de clientes</h1>
+{% endblock %}
 
-    <p><strong>DNI:</strong> {{ cliente.dni }}</p>
-    <p><strong>Nombre:</strong> {{ cliente.nombre|capfirst }}</p>
-    <p><strong>Apellidos:</strong> {{ cliente.apellidos|capfirst }}</p>
-    <p><strong>Email:</strong> {{ cliente.email }}</p>
-    <hr>
-{%empty%}
-    <h1>No hay clientes</h1>
-{%endfor%}
+{% block busqueda %}
+{% endblock %}
+
+{% block contenido %}
+    {% for cliente in clientes_mostrar %}
+        {% include 'cliente/cliente.html' %}
+        {% empty %}
+        <p>No hay clientes que cumplan esa condición</p>
+    {% endfor %}
+{% endblock %}
+

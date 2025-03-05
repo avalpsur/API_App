@@ -1,0 +1,16 @@
+{% extends "principal.html" %}
+
+{% block contenido %}
+<h2>Actualizar Tamaño de Sala</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="tamano">Tamaño:</label>
+    <select name="tamano" class="form-control">
+        <option value="PE">Pequeña</option>
+        <option value="ME">Mediana</option>
+        <option value="GR">Grande</option>
+    </select>
+    <button type="submit" class="btn btn-success">Actualizar</button>
+    <a href="{% url 'sala_lista' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
